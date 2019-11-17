@@ -58,6 +58,8 @@ class Class_eMail():
     
     #Call this to send plain text emails.
     def send_Text_Mail(self, Subject, txtMessage, To_Add = TO_ADD):
+        Subject = Subject.replace('"', '')
+        txtMessage = txtMessage.replace('"', '')
         Mail_Body = self.initialise_Mail_Body(To_Add, Subject)
         #Attach Mail Message
         Mail_Msg = MIMEText(txtMessage, 'plain')
