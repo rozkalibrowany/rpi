@@ -1,14 +1,3 @@
-
-##------------------------------------------
-##--- Author: Pradeep Singh
-##--- Blog: https://iotbytes.wordpress.com/programmatically-send-e-mail-from-raspberry-pi-using-python-and-gmail/
-##--- Date: 21st Feb 2017
-##--- Version: 1.0
-##--- Python Ver: 2.7
-##--- Description: This python code will send Plain Text and HTML based emails using Gmail SMTP server
-##------------------------------------------
-
-
 import ConfigParser, inspect, os
 import smtplib
 from email.mime.multipart import MIMEMultipart
@@ -29,6 +18,7 @@ def read_Email_Settings():
         config.read(settings_File_Path)
 
         global FROM_ADD
+        global TO_ADD
         global USERNAME
         global PASSWORD
         global SMTP_SERVER
@@ -37,6 +27,7 @@ def read_Email_Settings():
         SMTP_SERVER = config.get("EMAIL","SMTP_ADD")
         SMTP_PORT = config.get("EMAIL","SMTP_PORT")
         FROM_ADD = config.get("EMAIL","FROM_ADD")
+        TO_ADD = config.get("EMAIL", "TO_ADD")
         USERNAME = config.get("EMAIL","USERNAME")
         PASSWORD = config.get("EMAIL","PASSWORD")
 
@@ -66,7 +57,9 @@ class Class_eMail():
     
     
     #Call this to send plain text emails.
-    def send_Text_Mail(self, To_Add, Subject, txtMessage):
+    def send_Text_Mail(self, Subject, txtMessage, To_Add = TO_ADD):
+        Subject = Subject.replace('"', '')
+        txtMessage = txtMessage.replace('"', '')
         Mail_Body = self.initialise_Mail_Body(To_Add, Subject)
         #Attach Mail Message
         Mail_Msg = MIMEText(txtMessage, 'plain')
